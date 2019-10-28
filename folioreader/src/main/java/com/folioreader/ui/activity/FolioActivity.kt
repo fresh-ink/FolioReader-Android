@@ -337,18 +337,20 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     override fun setDayMode() {
         Log.v(LOG_TAG, "-> setDayMode")
 
-        actionBar!!.setBackgroundDrawable(
-            ColorDrawable(ContextCompat.getColor(this, R.color.white))
-        )
+        if (actionBar != null)
+            actionBar!!.setBackgroundDrawable(
+                ColorDrawable(ContextCompat.getColor(this, R.color.white))
+            )
         toolbar!!.setTitleTextColor(ContextCompat.getColor(this, R.color.black))
     }
 
     override fun setNightMode() {
         Log.v(LOG_TAG, "-> setNightMode")
 
-        actionBar!!.setBackgroundDrawable(
-            ColorDrawable(ContextCompat.getColor(this, R.color.black))
-        )
+        if (actionBar != null)
+            actionBar!!.setBackgroundDrawable(
+                ColorDrawable(ContextCompat.getColor(this, R.color.black))
+            )
         toolbar!!.setTitleTextColor(ContextCompat.getColor(this, R.color.night_title_text_color))
     }
 
