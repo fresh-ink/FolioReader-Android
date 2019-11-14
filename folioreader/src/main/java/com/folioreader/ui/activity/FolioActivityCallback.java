@@ -23,6 +23,8 @@ public interface FolioActivityCallback {
 
     void toggleSystemUI();
 
+    void onCloseViaInBookLink();
+
     void setDayMode();
 
     void setNightMode();

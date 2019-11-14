@@ -39,6 +39,7 @@ public class FolioReader {
     public static final String EXTRA_BOOK_ID = "com.folioreader.extra.BOOK_ID";
     public static final String EXTRA_READ_LOCATOR = "com.folioreader.extra.READ_LOCATOR";
     public static final String EXTRA_PORT_NUMBER = "com.folioreader.extra.PORT_NUMBER";
+    public static final String EXTRA_CLOSE_TYPE = "com.folioreader.extra.CLOSE_TYPE";
     public static final String ACTION_SAVE_READ_LOCATOR = "com.folioreader.action.SAVE_READ_LOCATOR";
     public static final String ACTION_CLOSE_FOLIOREADER = "com.folioreader.action.CLOSE_FOLIOREADER";
     public static final String ACTION_FOLIOREADER_CLOSED = "com.folioreader.action.FOLIOREADER_CLOSED";
@@ -64,7 +65,7 @@ public class FolioReader {
          * Or you may call {@link FolioReader#stop()} in this method, if you wouldn't require to open
          * an epub again from your application.
          */
-        void onFolioReaderClosed();
+        void onFolioReaderClosed(String closeType);
     }
 
     private BroadcastReceiver highlightReceiver = new BroadcastReceiver() {
@@ -93,8 +94,10 @@ public class FolioReader {
     private BroadcastReceiver closedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            String closeType =
+                    (String) intent.getSerializableExtra(FolioReader.EXTRA_CLOSE_TYPE);
             if (onClosedListener != null)
-                onClosedListener.onFolioReaderClosed();
+                onClosedListener.onFolioReaderClosed(closeType);
         }
     };
 

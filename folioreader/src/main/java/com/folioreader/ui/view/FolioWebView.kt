@@ -150,6 +150,13 @@ class FolioWebView : WebView {
     }
 
     @JavascriptInterface
+    fun onClickCloseStoryButton() {
+        uiHandler.post {
+            folioActivityCallback.onCloseViaInBookLink()
+        }
+    }
+
+    @JavascriptInterface
     fun isPopupShowing(): Boolean {
         return popupWindow.isShowing
     }

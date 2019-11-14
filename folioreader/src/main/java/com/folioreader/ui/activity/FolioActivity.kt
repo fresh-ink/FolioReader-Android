@@ -78,6 +78,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     View.OnSystemUiVisibilityChangeListener {
 
     private var bookFileName: String? = null
+    private var usedClosedStoryButton: Boolean = false
 
     private var mFolioPageViewPager: DirectionalViewpager? = null
     private var actionBar: ActionBar? = null
@@ -706,6 +707,24 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
     }
 
+    override fun onCloseViaInBookLink() {
+        Log.i(LOG_TAG, "-> onCloseViaInBookLink")
+        usedClosedStoryButton = true;
+
+        val closeIntent = Intent(applicationContext, FolioActivity::class.java)
+        closeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        closeIntent.action = FolioReader.ACTION_CLOSE_FOLIOREADER
+        this@FolioActivity.startActivity(closeIntent)
+
+        val localBroadcastManager = LocalBroadcastManager.getInstance(this)
+        localBroadcastManager.unregisterReceiver(searchReceiver)
+        localBroadcastManager.unregisterReceiver(closeBroadcastReceiver)
+
+        val intent = Intent(FolioReader.ACTION_FOLIOREADER_CLOSED)
+        intent.putExtra(FolioReader.EXTRA_CLOSE_TYPE, "STORY_CLOSE")
+        localBroadcastManager.sendBroadcast(intent)
+    }
+
     private fun showSystemUI() {
         Log.v(LOG_TAG, "-> showSystemUI")
 
@@ -833,7 +852,13 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             r2StreamerServer!!.stop()
 
         if (isFinishing) {
-            localBroadcastManager.sendBroadcast(Intent(FolioReader.ACTION_FOLIOREADER_CLOSED))
+            if (usedClosedStoryButton) {
+                val intent = Intent(FolioReader.ACTION_FOLIOREADER_CLOSED)
+                intent.putExtra(FolioReader.EXTRA_CLOSE_TYPE, "STORY_CLOSE")
+                localBroadcastManager.sendBroadcast(intent)
+            } else {
+                localBroadcastManager.sendBroadcast(Intent(FolioReader.ACTION_FOLIOREADER_CLOSED))
+            }
             FolioReader.get().retrofit = null
             FolioReader.get().r2StreamerApi = null
         }

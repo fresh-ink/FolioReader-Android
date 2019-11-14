@@ -836,6 +836,11 @@ function onClickHtml() {
     }
 }
 
+function onClickCloseStoryButton(e) {
+    FolioWebView.onClickCloseStoryButton();
+    e.stopPropagation();
+}
+
 function computeLastReadCfi() {
 
     viewportRect = constructDOMRect(FolioWebView.getViewportRect(DisplayUnit.CSS_PX));

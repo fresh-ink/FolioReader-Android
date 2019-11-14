@@ -4,6 +4,7 @@ import android.content.Context;
 import com.folioreader.Config;
 import com.folioreader.Constants;
 import com.folioreader.R;
+import android.util.Log;
 
 /**
  * @author gautam chibde on 14/6/17.
@@ -103,6 +104,10 @@ public final class HtmlUtil {
 
         htmlContent = htmlContent.replace("<html", "<html class=\"" + classes + "\"" +
                 " onclick=\"onClickHtml()\"");
+
+        // Add Close Story button
+        String closeButtonHtml = "<div onclick=\"onClickCloseStoryButton(event);\" style=\"background:#f9b197!important;border-radius:68px;padding: 15px!important;width: 250px;height:23px;margin: 0 auto;margin-top:20px!important;text-indent:0!important;margin-bottom: 80px!important;text-align: center;padding-top:11px!important;\"><span style=\"text-decoration:none;font-family:Noto Sans;font-size:16px;line-height:27px;font-weight:700;color:#245160;text-indent:0!important;\">Close Story</span></div>\n</body>";
+        htmlContent = htmlContent.replace("</body>", closeButtonHtml);
         return htmlContent;
     }
 }
