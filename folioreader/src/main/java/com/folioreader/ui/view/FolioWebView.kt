@@ -271,6 +271,7 @@ class FolioWebView : WebView {
         viewTextSelection = LayoutInflater.from(ctw).inflate(R.layout.text_selection, null)
         viewTextSelection.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
 
+        /*
         viewTextSelection.yellowHighlight.setOnClickListener {
             Log.v(LOG_TAG, "-> onClick -> yellowHighlight")
             onHighlightColorItemsClicked(HighlightStyle.Yellow, false)
@@ -311,6 +312,7 @@ class FolioWebView : WebView {
             dismissPopupWindow()
             loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
         }
+        */
     }
 
     @JavascriptInterface
@@ -318,6 +320,7 @@ class FolioWebView : WebView {
 
         uiHandler.post { loadUrl("javascript:clearSelection()") }
 
+            /*
         when (id) {
             R.id.copySelection -> {
                 Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> copySelection -> $selectedText")
@@ -336,6 +339,8 @@ class FolioWebView : WebView {
                 Log.w(LOG_TAG, "-> onTextSelectionItemClicked -> unknown id = $id")
             }
         }
+
+             */
     }
 
     private fun showDictDialog(selectedText: String?) {
