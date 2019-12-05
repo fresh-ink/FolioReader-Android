@@ -576,7 +576,7 @@ class FolioPageFragment : Fragment(),
         super.onStop()
         Log.v(LOG_TAG, "-> onStop -> " + spineItem.href + " -> " + isCurrentFragment)
 
-        mediaController!!.stop()
+        //mediaController!!.stop()
         //TODO save last media overlay item
 
         if (isCurrentFragment)

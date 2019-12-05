@@ -74,7 +74,7 @@ import org.readium.r2.streamer.parser.PubBox
 import org.readium.r2.streamer.server.Server
 import java.lang.ref.WeakReference
 
-class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControllerCallback,
+class FolioActivity : AppCompatActivity(), FolioActivityCallback,
     View.OnSystemUiVisibilityChangeListener {
 
     private var bookFileName: String? = null
@@ -102,7 +102,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     private var mEpubFilePath: String? = null
     private var mEpubSourceType: EpubSourceType? = null
     private var mEpubRawId = 0
-    private var mediaControllerFragment: MediaControllerFragment? = null
     private var direction: Config.Direction = Config.Direction.VERTICAL
     private var portNumber: Int = Constants.DEFAULT_PORT_NUMBER
     private var streamerUri: Uri? = null
@@ -281,7 +280,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
 
         initActionBar()
-        initMediaController()
 
         /*if (ContextCompat.checkSelfPermission(
                 this@FolioActivity,
@@ -357,12 +355,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             toolbar!!.setTitleTextColor(ContextCompat.getColor(this, R.color.night_title_text_color))
     }
 
-    private fun initMediaController() {
-        Log.v(LOG_TAG, "-> initMediaController")
-
-        mediaControllerFragment = MediaControllerFragment.getInstance(supportFragmentManager, this)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
@@ -392,10 +384,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             showConfigBottomSheetDialogFragment()
             return true
 
-        } else if (itemId == R.id.itemTts) {
-            Log.v(LOG_TAG, "-> onOptionsItemSelected -> " + item.title)
-            showMediaController()
-            return true
         }
 
         return super.onOptionsItemSelected(item)
@@ -428,10 +416,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             supportFragmentManager,
             ConfigBottomSheetDialogFragment.LOG_TAG
         )
-    }
-
-    fun showMediaController() {
-        mediaControllerFragment!!.show(supportFragmentManager)
     }
 
     private fun setupBook() {
@@ -878,12 +862,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             override fun onPageSelected(position: Int) {
                 Log.v(LOG_TAG, "-> onPageSelected -> DirectionalViewpager -> position = $position")
 
-                EventBus.getDefault().post(
-                    MediaOverlayPlayPauseEvent(
-                        spine!![currentChapterIndex].href, false, true
-                    )
-                )
-                mediaControllerFragment!!.setPlayButtonDrawable()
                 currentChapterIndex = position
             }
 
@@ -1026,22 +1004,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
         AppUtil.saveConfig(this, config)
         direction = config.direction
-    }
-
-    override fun play() {
-        EventBus.getDefault().post(
-            MediaOverlayPlayPauseEvent(
-                spine!![currentChapterIndex].href, true, false
-            )
-        )
-    }
-
-    override fun pause() {
-        EventBus.getDefault().post(
-            MediaOverlayPlayPauseEvent(
-                spine!![currentChapterIndex].href, false, false
-            )
-        )
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
