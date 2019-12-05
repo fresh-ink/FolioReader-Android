@@ -157,8 +157,8 @@ class FolioPageFragment : Fragment(),
             //    mediaController = new MediaController(getActivity(), MediaController.MediaType.SMIL, this);
             //    hasMediaOverlay = true;
             //} else {
-            mediaController = MediaController(activity, MediaController.MediaType.TTS, this)
-            mediaController!!.setTextToSpeech(activity)
+            //mediaController = MediaController(activity, MediaController.MediaType.TTS, this)
+            //mediaController!!.setTextToSpeech(activity)
             //}
         }
         highlightStyle = HighlightImpl.HighlightStyle.classForStyle(HighlightImpl.HighlightStyle.Normal)
